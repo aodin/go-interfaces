@@ -1,0 +1,134 @@
+Practical Interfaces
+28 Jul 2016
+Tags: go, golang, interface
+
+Aaron O. Ellis
+aaron.o.ellis@gmail.com
+https://aaronoellis.com/
+@aaronoellis
+
+
+* Interfaces in Go
+
+An _interface_type_ is defined as a set of method signatures.
+
+_Interface_values_ can be thought of as a tuple of `(value,`type)`.
+
+An _interface_value_ that holds a `nil` concrete value is itself non- `nil`.
+
+.link https://tour.golang.org/methods/9 Tour of Go: Interfaces
+.link https://golang.org/doc/effective_go.html#interfaces_and_types Effective Go: Interfaces
+
+
+* Using Interfaces - The Good
+
+*An*implementation*target*
+
+Remove the duplicated code surrounding the interface.
+
+    type Image interface {
+        ColorModel() color.Model
+        Bounds() Rectangle
+        At(x, y int) color.Color
+    }
+
+Examples throughout the standard library include `fmt.Stringer`, `encoding` sub-packages, `crypto`, `database/sql`, and more...
+
+
+* Gotchas - Nil Receivers
+
+Interfaces check that the type implements the interface, not the value.
+
+.play examples/nil/nil.go /BEGIN OMIT/,$
+
+
+* Gotchas - Typed Nil
+
+Be careful using typed `nil` and interfaces.
+
+.play examples/error/error.go /BEGIN OMIT/,$
+
+
+* Using Interfaces - The Bad
+
+*Over-zealous*abstraction*
+
+The interface is a contract with the code that implements it - not the implementation itself!
+
+
+* An Example
+
+    type Job interface {
+        Log(...interface{})
+        Pid() uint64
+        Start(halt <-chan bool) error
+    }
+
+    // Start is part of a Job implementation
+    func (j crunch) Start(halt <-chan bool) error {
+        for chunk := 0; chunk < 10; chunk += 1 {
+            select {
+            case <-halt:
+                return fmt.Errorf("Halting during chunk %d", chunk)
+            default:
+                break
+            }
+            time.Sleep(time.Second) // Or any high difficulty task
+
+            j.Log(fmt.Sprintf("Finished chunk %d", chunk))
+        }
+        return nil
+    }
+
+
+* An Example cont.
+
+Should the job require logging?
+
+    // Could just as easily be...
+    type Job interface {
+        Pid() uint64
+        Start(halt <-chan bool) error
+    }
+
+    // Within the function
+    log.Printf("Finished chunk %d", chunk)
+
+
+* Remember...
+
+You can embed interfaces!
+
+    type Task struct {
+        Logger
+        // Other fields
+    }
+
+
+* Using Interfaces - The Ugly
+
+*Generic*parameters*
+
+An empty interface says nothing, but sometimes you want silence.
+
+But avoid the death spiral of type switches/assertions and `reflect`...
+
+
+* Gotchas - Arrays / Slices
+
+Types `[]T` and `[]interface{}` have different representations in memory.
+
+.play examples/array/array.go /BEGIN OMIT/,$
+
+
+* A Design Pattern
+
+Interfaces that modify structs
+
+    type Config struct {
+        // Values
+    }
+
+    type Modifier interface {
+        Modify(*Config) error
+    }

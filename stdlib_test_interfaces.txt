@@ -1,0 +1,24 @@
+./crypto/tls/handshake_messages_test.go:29:type testMessage interface {
+./database/sql/sql_test.go:1848:type concurrentTest interface {
+./encoding/gob/codec_test.go:1048:type Squarer interface {
+./encoding/gob/encoder_test.go:432:type interfaceIndirectTestI interface {
+./encoding/gob/example_interface_test.go:23:type Pythagoras interface {
+./go/types/resolver_test.go:77:     type I interface{ m() }
+./image/image_test.go:12:type image interface {
+./io/pipe_test.go:143:type closer interface {
+./net/http/serve_test.go:3263:      type stringWriter interface {
+./reflect/all_test.go:1860:type Tinter interface {
+./reflect/all_test.go:1914:type tinter interface {
+./reflect/all_test.go:2953: type t0 interface {
+./reflect/all_test.go:2957: type T1 interface {
+./runtime/gcinfo_test.go:168:type Iface interface {
+./runtime/hash_test.go:261:type Key interface {
+./runtime/iface_test.go:12:type I1 interface {
+./runtime/iface_test.go:16:type I2 interface {
+./runtime/mfinal_test.go:19:type Tinter interface {
+./runtime/race/testdata/issue12664_test.go:24:type MyI interface {
+./runtime/race/testdata/mop_test.go:33:type Writer interface {
+./runtime/race/testdata/mop_test.go:810:type IoReader interface {
+./runtime/race/testdata/mop_test.go:1352:type Inter interface {
+./runtime/race/testdata/regression_test.go:174:type iface interface {
+./text/template/exec_test.go:151:type I interface {
